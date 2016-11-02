@@ -200,7 +200,7 @@ public class VentanaPrincipal {
 		ventana.setVisible(true);
 		inicializarComponentes();	
 		inicializarListeners();	
-		juego.inicializarPartida();
+		
 	}
 
 

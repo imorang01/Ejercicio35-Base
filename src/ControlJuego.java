@@ -50,22 +50,30 @@ public class ControlJuego {
 		// hay alrededor.
 
 		// Pongo la puntuación a cero:
-		int fila;
-		int columna;
+		puntuacion = 0;
 		for (int i = 0; i < MINAS_INICIALES; i++) {
 
-			boolean mina = true;
+			boolean mina = false;
 			while (!mina) {
-				fila = (int) Math.random() * 10;
-				columna = (int) Math.random() * 10;
+				int fila = (int) (Math.random() * 10);
+				int columna = (int) (Math.random() * 10);
 				if (tablero[fila][columna] != MINA) {
-					mina = false;
+					mina = true;
 					tablero[fila][columna] = MINA;
+
+				}
+
+			}
+		}
+		for (int i = 0; i < tablero.length; i++) {
+			for (int j = 0; j < tablero[i].length; j++) {
+				if(tablero[i][j]!=MINA){
+					tablero[i][j]=calculoMinasAdjuntas(i, j);
 				}
 			}
 		}
 		depurarTablero();
-		puntuacion = 0;
+
 	}
 
 	/**
@@ -81,7 +89,34 @@ public class ControlJuego {
 	 * @return : El número de minas que hay alrededor de la casilla [i][j]
 	 */
 	private int calculoMinasAdjuntas(int i, int j) {
-
+		int contador = 0;
+		int imin=i, imax=i;
+		int jmin=j, jmax=j;
+		if (tablero[i][j] == MINA) {
+			return -1;
+		} 
+		if (i > 0) {
+			imin = i-1;
+		}
+		if (i < LADO_TABLERO - 1) {
+			imax = i+1;
+		} 
+		if (j > 0) {
+			jmin = j-1;
+		}
+		if (j < LADO_TABLERO - 1) {
+			jmax = j+1;
+		} 
+		for (int k = imin; k <= imax; k++) {
+			for (int k2 = jmin; k2 <= jmax; k2++) {
+				if (tablero[k][k2] == MINA) {
+					
+					contador++;
+				}
+			}
+		}
+		
+		return contador;
 	}
 
 	/**
@@ -96,7 +131,11 @@ public class ControlJuego {
 	 * @return : Verdadero si no ha explotado una mina. Falso en caso contrario.
 	 */
 	public boolean abrirCasilla(int i, int j) {
-
+		if(tablero[i][j]!=MINA){
+			puntuacion++;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -107,6 +146,10 @@ public class ControlJuego {
 	 *         minas.
 	 **/
 	public boolean esFinJuego() {
+		if(puntuacion==80){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -137,9 +180,20 @@ public class ControlJuego {
 	 * @return Un entero que representa el número de minas alrededor de la
 	 *         celda
 	 */
-	public int getMinasAlrededor(int i, int j) {
-
-	}
+	// public int getMinasAlrededor(int i, int j) {
+	//
+	// int contador=0;
+	// if(tablero[--i][--j]==MINA){contador++;}
+	// if(tablero[i][--j]==MINA){contador++;}
+	// if(tablero[++i][--j]==MINA){contador++;}
+	// if(tablero[--i][j]==MINA){contador++;}
+	// if(tablero[i][j]==MINA){contador++;}
+	// if(tablero[++i][j]==MINA){contador++;}
+	// if(tablero[--i][++j]==MINA){contador++;}
+	// if(tablero[i][++j]==MINA){contador++;}
+	// if(tablero[++i][++j]==MINA){contador++;}
+	// return contador;
+	// }
 
 	/**
 	 * Método que devuelve la puntuación actual
