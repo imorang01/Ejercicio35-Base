@@ -139,7 +139,23 @@ public class VentanaPrincipal {
 	 * Método que inicializa todos los lísteners que necesita inicialmente el programa
 	 */
 	public void inicializarListeners(){
-		//TODO
+		botonEmpezar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < botonesJuego.length; i++) {
+					for (int j = 0; j < botonesJuego[i].length; j++) {
+						
+					}
+				}
+				refrescarPantalla();
+			}
+		});
+		for (int i = 0; i < botonesJuego.length; i++) {
+			for (int j = 0; j < botonesJuego[i].length; j++) {
+				botonesJuego[i][j].addActionListener(new ActionBoton(this, juego, i, j));
+			}
+		}
 	}
 	
 	
@@ -156,7 +172,14 @@ public class VentanaPrincipal {
 	 * @param j: posición horizontal de la celda.
 	 */
 	public void mostrarNumMinasAlrededor(int i , int j) {
-		//TODO
+		int minasAlrededor=juego.getMinasAlrededor(i, j);
+		panelesJuego[i][j].removeAll();
+		JLabel pantallaMinas=new JLabel(""+minasAlrededor);
+		
+		pantallaMinas.setForeground(correspondenciaColores[minasAlrededor]);
+		pantallaMinas.setHorizontalAlignment(SwingConstants.CENTER);
+		panelesJuego[i][j].add(pantallaMinas);
+		refrescarPantalla();
 	}
 	
 	
@@ -166,14 +189,27 @@ public class VentanaPrincipal {
 	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
-		//TODO
+		String mensaje;
+		if(porExplosion){
+			mensaje="Fin del juego";
+		}
+		else{
+			mensaje="Enhorabuena";
+		}
+		for (int i = 0; i < botonesJuego.length; i++) {
+			for (int j = 0; j < botonesJuego[i].length; j++) {
+				botonesJuego[i][j].setEnabled(false);
+			}
+		}
+		JOptionPane.showMessageDialog(ventana, mensaje);
+		juego.inicializarPartida();
 	}
 
 	/**
 	 * Método que muestra la puntuación por pantalla.
 	 */
 	public void actualizarPuntuacion() {
-		//TODO
+		pantallaPuntuacion.setText(""+juego.getPuntuacion());
 	}
 	
 	/**

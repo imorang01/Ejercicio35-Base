@@ -51,6 +51,12 @@ public class ControlJuego {
 
 		// Pongo la puntuación a cero:
 		puntuacion = 0;
+
+		for (int i = 0; i < tablero.length; i++) {
+			for (int j = 0; j < tablero[i].length; j++) {
+				tablero[i][j] = 0;
+			}
+		}
 		for (int i = 0; i < MINAS_INICIALES; i++) {
 
 			boolean mina = false;
@@ -67,12 +73,12 @@ public class ControlJuego {
 		}
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
-				if(tablero[i][j]!=MINA){
-					tablero[i][j]=calculoMinasAdjuntas(i, j);
+				if (tablero[i][j] != MINA) {
+					tablero[i][j] = calculoMinasAdjuntas(i, j);
 				}
 			}
 		}
-		depurarTablero();
+		
 
 	}
 
@@ -90,32 +96,15 @@ public class ControlJuego {
 	 */
 	private int calculoMinasAdjuntas(int i, int j) {
 		int contador = 0;
-		int imin=i, imax=i;
-		int jmin=j, jmax=j;
-		if (tablero[i][j] == MINA) {
-			return -1;
-		} 
-		if (i > 0) {
-			imin = i-1;
-		}
-		if (i < LADO_TABLERO - 1) {
-			imax = i+1;
-		} 
-		if (j > 0) {
-			jmin = j-1;
-		}
-		if (j < LADO_TABLERO - 1) {
-			jmax = j+1;
-		} 
-		for (int k = imin; k <= imax; k++) {
-			for (int k2 = jmin; k2 <= jmax; k2++) {
-				if (tablero[k][k2] == MINA) {
-					
+
+		for (int k = i - 1; k <= i + 1; k++) {
+			for (int l = j - 1; l <= j + 1; l++) {
+				if (k >= 0 && k < LADO_TABLERO && l >= 0 && l < LADO_TABLERO && tablero[k][l] == MINA) {
 					contador++;
 				}
 			}
 		}
-		
+
 		return contador;
 	}
 
@@ -131,7 +120,7 @@ public class ControlJuego {
 	 * @return : Verdadero si no ha explotado una mina. Falso en caso contrario.
 	 */
 	public boolean abrirCasilla(int i, int j) {
-		if(tablero[i][j]!=MINA){
+		if (tablero[i][j] != MINA) {
 			puntuacion++;
 			return true;
 		}
@@ -146,10 +135,7 @@ public class ControlJuego {
 	 *         minas.
 	 **/
 	public boolean esFinJuego() {
-		if(puntuacion==80){
-			return true;
-		}
-		return false;
+		return puntuacion == LADO_TABLERO * LADO_TABLERO - MINAS_INICIALES;
 	}
 
 	/**
@@ -164,7 +150,7 @@ public class ControlJuego {
 			}
 			System.out.println();
 		}
-		System.out.println("\nPuntuación: " + puntuacion);
+		System.out.println("\nPuntuacion: " + puntuacion);
 	}
 
 	/**
@@ -180,20 +166,9 @@ public class ControlJuego {
 	 * @return Un entero que representa el número de minas alrededor de la
 	 *         celda
 	 */
-	// public int getMinasAlrededor(int i, int j) {
-	//
-	// int contador=0;
-	// if(tablero[--i][--j]==MINA){contador++;}
-	// if(tablero[i][--j]==MINA){contador++;}
-	// if(tablero[++i][--j]==MINA){contador++;}
-	// if(tablero[--i][j]==MINA){contador++;}
-	// if(tablero[i][j]==MINA){contador++;}
-	// if(tablero[++i][j]==MINA){contador++;}
-	// if(tablero[--i][++j]==MINA){contador++;}
-	// if(tablero[i][++j]==MINA){contador++;}
-	// if(tablero[++i][++j]==MINA){contador++;}
-	// return contador;
-	// }
+	public int getMinasAlrededor(int i, int j) {
+		return tablero[i][j];
+	}
 
 	/**
 	 * Método que devuelve la puntuación actual
