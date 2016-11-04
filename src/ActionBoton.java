@@ -36,8 +36,12 @@ public class ActionBoton implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(juego.abrirCasilla(iboton, jboton)){
-			ventana.getJuego().getMinasAlrededor(iboton, iboton);
-			ventana.mostrarNumMinasAlrededor(iboton, iboton);
+			ventana.mostrarNumMinasAlrededor(iboton, jboton);
+			ventana.actualizarPuntuacion();
+		}
+		else{
+			ventana.refrescarPantalla();
+			ventana.mostrarFinJuego(true);
 		}
 	}
 

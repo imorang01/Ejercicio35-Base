@@ -124,7 +124,7 @@ public class VentanaPrincipal {
 		botonesJuego = new JButton[10][10];
 		for (int i = 0; i < botonesJuego.length; i++) {
 			for (int j = 0; j < botonesJuego[i].length; j++) {
-				botonesJuego[i][j] = new JButton("-");
+				botonesJuego[i][j] = new JButton();
 				panelesJuego[i][j].add(botonesJuego[i][j]);
 			}
 		}
@@ -143,9 +143,12 @@ public class VentanaPrincipal {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (int i = 0; i < botonesJuego.length; i++) {
-					for (int j = 0; j < botonesJuego[i].length; j++) {
-						
+				juego.inicializarPartida();
+				for (int i = 0; i < panelesJuego.length; i++) {
+					for (int j = 0; j < panelesJuego[i].length; j++) {
+						panelesJuego[i][j].removeAll();
+						botonesJuego[i][j].setEnabled(true);
+						panelesJuego[i][j].add(botonesJuego[i][j]);
 					}
 				}
 				refrescarPantalla();
@@ -153,9 +156,10 @@ public class VentanaPrincipal {
 		});
 		for (int i = 0; i < botonesJuego.length; i++) {
 			for (int j = 0; j < botonesJuego[i].length; j++) {
-				botonesJuego[i][j].addActionListener(new ActionBoton(this, juego, i, j));
+				botonesJuego[i][j].addActionListener(new ActionBoton(this,juego, i, j));
 			}
 		}
+		juego.depurarTablero();
 	}
 	
 	
@@ -189,19 +193,26 @@ public class VentanaPrincipal {
 	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
-		String mensaje;
+		String mensaje="";
 		if(porExplosion){
-			mensaje="Fin del juego";
-		}
-		else{
-			mensaje="Enhorabuena";
-		}
-		for (int i = 0; i < botonesJuego.length; i++) {
-			for (int j = 0; j < botonesJuego[i].length; j++) {
-				botonesJuego[i][j].setEnabled(false);
+			mensaje="Fin del juego \nPuntuacion "+juego.getPuntuacion();
+			for (int i = 0; i < botonesJuego.length; i++) {
+				for (int j = 0; j < botonesJuego[i].length; j++) {
+					botonesJuego[i][j].setEnabled(false);
+				}
 			}
+			JOptionPane.showMessageDialog(ventana, mensaje);
 		}
-		JOptionPane.showMessageDialog(ventana, mensaje);
+		if(juego.esFinJuego()){
+			refrescarPantalla();
+			mensaje="Enhorabuena \nPuntuacion "+juego.getPuntuacion();
+			for (int i = 0; i < botonesJuego.length; i++) {
+				for (int j = 0; j < botonesJuego[i].length; j++) {
+					botonesJuego[i][j].setEnabled(false);
+				}
+			}
+			JOptionPane.showMessageDialog(ventana, mensaje);
+		}
 		juego.inicializarPartida();
 	}
 

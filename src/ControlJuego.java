@@ -50,7 +50,7 @@ public class ControlJuego {
 		// hay alrededor.
 
 		// Pongo la puntuación a cero:
-		puntuacion = 0;
+		
 
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
@@ -78,7 +78,7 @@ public class ControlJuego {
 				}
 			}
 		}
-		
+		puntuacion = 0;
 
 	}
 
